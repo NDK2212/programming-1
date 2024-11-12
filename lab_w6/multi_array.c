@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 
 struct MultiArray
 {
@@ -14,6 +15,16 @@ struct MultiArray
 */
 int get_data(struct MultiArray* array, int* indexes, int n_dims)
 {
+    int total_dims = 1;
+    for(int i = 0;i<n_dims;i++){
+        total_dims*=array->shape[i];
+    }
+    int the_index_for_answer = 0;
+    for(int i = 0;i<n_dims;i++){
+        total_dims/=array->shape[i];
+        the_index_for_answer+=total_dims*indexes[i];
+    }
+    return array->data[the_index_for_answer];
 }
 
 int main()
@@ -30,7 +41,7 @@ int main()
     for (int i = 0; i < 3 * 2 * 2; i++)
     {
         array->data[i] = i;
-        // printf("array->data[%d] = %d\n", i, array->data[i]);
+        printf("array->data[%d] = %d\n", i, array->data[i]);
     }
 
     // assign shape
@@ -41,7 +52,7 @@ int main()
 
     int indexes[] = { 1, 0, 1 };
     int out = get_data(array, indexes, 3);
-
+    printf("YESSIR: %d HEY", out);
     return 0;
 }
 
